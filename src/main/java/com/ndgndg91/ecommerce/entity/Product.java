@@ -26,7 +26,7 @@ public class Product {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description1")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "unit_price")
@@ -38,7 +38,7 @@ public class Product {
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "unit_in_stock1")
+    @Column(name = "units_in_stock")
     private int unitsInStock;
 
     @Column(name = "date_created")
