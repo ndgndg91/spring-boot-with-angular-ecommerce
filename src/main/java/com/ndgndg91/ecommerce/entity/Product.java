@@ -48,4 +48,48 @@ public class Product {
     @Column(name = "last_updated")
     @UpdateTimestamp
     private LocalDate lastUpdated;
+
+    public Long getId() {
+        return id;
+    }
+
+    public ProductCategory getCategory() {
+        return category;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public int getUnitsInStock() {
+        return unitsInStock;
+    }
+
+    public LocalDate getDataCreated() {
+        return dataCreated;
+    }
+
+    public LocalDate getLastUpdated() {
+        return lastUpdated;
+    }
 }
