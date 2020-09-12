@@ -3,13 +3,13 @@ package com.ndgndg91.ecommerce.controller.dto;
 import java.util.List;
 
 public final class CategoriesResponse {
-    private List<CategoryResponse> categories;
+    private final List<CategoryResponse> productCategories;
 
     public CategoriesResponse(List<CategoryResponse> categories) {
-        this.categories = categories;
+        this.productCategories = categories;
     }
 
-    public List<CategoryResponse> getCategories() {
-        return categories;
+    public List<CategoryResponse> getProductCategories() {
+        return productCategories;
     }
 }
