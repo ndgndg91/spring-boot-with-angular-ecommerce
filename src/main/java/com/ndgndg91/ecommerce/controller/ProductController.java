@@ -56,13 +56,27 @@ public class ProductController {
     }
 
     @GetMapping("/api/products/search/findByCategoryId")
-    public ResponseEntity<ProductsResponse> productByCategoryId(
+    public ResponseEntity<ProductsResponse> productsByCategoryId(
             @RequestParam long id,
             Pageable pageable
     ) {
         log.info("call Find By Category API");
         Page<Product> byCategoryId = productRepository.findByCategoryId(id, pageable);
-        List<ProductResponse> products = byCategoryId.stream().map(p ->
+        return getProductsResponseResponseEntity(byCategoryId);
+    }
+
+    @GetMapping("/api/products/search/findByNameContaining")
+    public ResponseEntity<ProductsResponse> productsByNameContaining(
+            @RequestParam String name,
+            Pageable pageable
+    )
+    {
+        Page<Product> byNameContaining = productRepository.findByNameContaining(name, pageable);
+        return getProductsResponseResponseEntity(byNameContaining);
+    }
+
+    private ResponseEntity<ProductsResponse> getProductsResponseResponseEntity(Page<Product> byNameContaining) {
+        List<ProductResponse> products = byNameContaining.stream().map(p ->
                 new ProductResponse(
                         p.getId(),
                         p.getSku(),
