@@ -1,60 +1,56 @@
-package com.ndgndg91.ecommerce.entity;
+package com.ndgndg91.ecommerce.controller.dto;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "product")
-public class Product {
+public final class ProductResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private ProductCategory category;
+    private Long categoryId;
+    private String categoryName;
 
-    @Column(name = "sku")
     private String sku;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
-    @Column(name = "image_url")
     private  String imageUrl;
 
-    @Column(name = "active")
     private boolean active;
 
-    @Column(name = "units_in_stock")
     private int unitsInStock;
 
-    @Column(name = "date_created")
-    @CreationTimestamp
-    private LocalDate dateCreated;
+    private LocalDate dataCreated;
 
-    @Column(name = "last_updated")
-    @UpdateTimestamp
     private LocalDate lastUpdated;
+
+    public ProductResponse(Long id, String sku, String name, String description, BigDecimal unitPrice, String imageUrl, boolean active, int unitsInStock, LocalDate dataCreated, LocalDate lastUpdated) {
+        this.id = id;
+        this.sku = sku;
+        this.name = name;
+        this.description = description;
+        this.unitPrice = unitPrice;
+        this.imageUrl = imageUrl;
+        this.active = active;
+        this.unitsInStock = unitsInStock;
+        this.dataCreated = dataCreated;
+        this.lastUpdated = lastUpdated;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public ProductCategory getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
     }
 
     public String getSku() {
@@ -85,8 +81,8 @@ public class Product {
         return unitsInStock;
     }
 
-    public LocalDate getDateCreated() {
-        return dateCreated;
+    public LocalDate getDataCreated() {
+        return dataCreated;
     }
 
     public LocalDate getLastUpdated() {

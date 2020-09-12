@@ -1,7 +1,9 @@
 package com.ndgndg91.ecommerce.controller;
 
-import com.ndgndg91.ecommerce.controller.dto.GetProductResponse;
-import com.ndgndg91.ecommerce.controller.dto.GetCategoryResponse;
+import com.ndgndg91.ecommerce.controller.dto.CategoriesResponse;
+import com.ndgndg91.ecommerce.controller.dto.CategoryResponse;
+import com.ndgndg91.ecommerce.controller.dto.ProductResponse;
+import com.ndgndg91.ecommerce.controller.dto.ProductsResponse;
 import com.ndgndg91.ecommerce.entity.Product;
 import com.ndgndg91.ecommerce.repository.ProductCategoryRepository;
 import com.ndgndg91.ecommerce.repository.ProductRepository;
@@ -34,25 +36,55 @@ public class ProductController {
     }
 
     @GetMapping("/api/products")
-    public ResponseEntity<GetProductResponse> products(){
+    public ResponseEntity<ProductsResponse> products() {
         log.info("call API");
-        return ResponseEntity.ok(new GetProductResponse(productRepository.findAll()));
+        List<ProductResponse> all = productRepository.findAll().stream().map(p ->
+                new ProductResponse(
+                        p.getId(),
+                        p.getSku(),
+                        p.getName(),
+                        p.getDescription(),
+                        p.getUnitPrice(),
+                        p.getImageUrl(),
+                        p.isActive(),
+                        p.getUnitsInStock(),
+                        p.getDateCreated(),
+                        p.getLastUpdated()
+                )
+        ).collect(Collectors.toList());
+        return ResponseEntity.ok(new ProductsResponse(all));
     }
 
     @GetMapping("/api/products/search/findByCategoryId")
-    public ResponseEntity<GetProductResponse> productByCategoryId(
+    public ResponseEntity<ProductsResponse> productByCategoryId(
             @RequestParam long id,
             Pageable pageable
-    ){
+    ) {
         log.info("call Find By Category API");
         Page<Product> byCategoryId = productRepository.findByCategoryId(id, pageable);
-        List<Product> collect = byCategoryId.stream().collect(Collectors.toList());
-        return ResponseEntity.ok(new GetProductResponse(collect));
+        List<ProductResponse> products = byCategoryId.stream().map(p ->
+                new ProductResponse(
+                        p.getId(),
+                        p.getSku(),
+                        p.getName(),
+                        p.getDescription(),
+                        p.getUnitPrice(),
+                        p.getImageUrl(),
+                        p.isActive(),
+                        p.getUnitsInStock(),
+                        p.getDateCreated(),
+                        p.getLastUpdated()
+                )
+        ).collect(Collectors.toList());
+        return ResponseEntity.ok(new ProductsResponse(products));
     }
 
     @GetMapping("/api/product-category")
-    public ResponseEntity<GetCategoryResponse> categories(){
+    public ResponseEntity<CategoriesResponse> categories() {
         log.info("call Product Category call");
-        return ResponseEntity.ok(new GetCategoryResponse(productCategoryRepository.findAll()));
+        List<CategoryResponse> all = productCategoryRepository.findAll().stream()
+                .map(c -> new CategoryResponse(c.getId(), c.getCategoryName()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new CategoriesResponse(all));
     }
 }
