@@ -1,6 +1,9 @@
 package com.ndgndg91.ecommerce.controller;
 
+import com.ndgndg91.ecommerce.controller.dto.GetProductResponse;
+import com.ndgndg91.ecommerce.controller.dto.GetCategoryResponse;
 import com.ndgndg91.ecommerce.entity.Product;
+import com.ndgndg91.ecommerce.repository.ProductCategoryRepository;
 import com.ndgndg91.ecommerce.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +26,11 @@ public class ProductController {
 
     private final ProductRepository productRepository;
 
-    public ProductController(ProductRepository productRepository) {
+    private final ProductCategoryRepository productCategoryRepository;
+
+    public ProductController(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository) {
         this.productRepository = productRepository;
+        this.productCategoryRepository = productCategoryRepository;
     }
 
     @GetMapping("/api/products")
@@ -38,21 +44,15 @@ public class ProductController {
             @RequestParam long id,
             Pageable pageable
     ){
-        log.info("call Category API");
+        log.info("call Find By Category API");
         Page<Product> byCategoryId = productRepository.findByCategoryId(id, pageable);
         List<Product> collect = byCategoryId.stream().collect(Collectors.toList());
         return ResponseEntity.ok(new GetProductResponse(collect));
     }
 
-    private static class GetProductResponse {
-        private final List<Product> products;
-
-        GetProductResponse(List<Product> products) {
-            this.products = products;
-        }
-
-        public List<Product> getProducts() {
-            return products;
-        }
+    @GetMapping("/api/product-category")
+    public ResponseEntity<GetCategoryResponse> categories(){
+        log.info("call Product Category call");
+        return ResponseEntity.ok(new GetCategoryResponse(productCategoryRepository.findAll()));
     }
 }
