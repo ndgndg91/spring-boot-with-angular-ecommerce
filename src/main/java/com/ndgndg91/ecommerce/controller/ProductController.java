@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +32,29 @@ public class ProductController {
     public ProductController(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository) {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
+    }
+
+    @GetMapping("/api/products/{id}")
+    public ResponseEntity<ProductResponse> product(
+            @PathVariable long id
+    )
+    {
+        log.info("call id API");
+        // TODO null handling
+        ProductResponse productResponse = productRepository.findById(id).map(p ->
+                new ProductResponse(
+                        p.getId(),
+                        p.getSku(),
+                        p.getName(),
+                        p.getDescription(),
+                        p.getUnitPrice(),
+                        p.getImageUrl(),
+                        p.isActive(),
+                        p.getUnitsInStock(),
+                        p.getDateCreated(),
+                        p.getLastUpdated()
+                )).orElse(null);
+        return ResponseEntity.ok(productResponse);
     }
 
     @GetMapping("/api/products")
