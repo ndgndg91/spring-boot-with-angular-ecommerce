@@ -1,9 +1,6 @@
 package com.ndgndg91.ecommerce.controller;
 
-import com.ndgndg91.ecommerce.controller.dto.CategoriesResponse;
-import com.ndgndg91.ecommerce.controller.dto.CategoryResponse;
-import com.ndgndg91.ecommerce.controller.dto.ProductResponse;
-import com.ndgndg91.ecommerce.controller.dto.ProductsResponse;
+import com.ndgndg91.ecommerce.controller.dto.*;
 import com.ndgndg91.ecommerce.entity.Product;
 import com.ndgndg91.ecommerce.repository.ProductCategoryRepository;
 import com.ndgndg91.ecommerce.repository.ProductRepository;
@@ -58,9 +55,12 @@ public class ProductController {
     }
 
     @GetMapping("/api/products")
-    public ResponseEntity<ProductsResponse> products() {
+    public ResponseEntity<ProductsPagingResponse> products(
+            Pageable pageable
+    ) {
         log.info("call API");
-        List<ProductResponse> all = productRepository.findAll().stream().map(p ->
+        Page<Product> page = productRepository.findAll(pageable);
+        List<ProductResponse> all = page.stream().map(p ->
                 new ProductResponse(
                         p.getId(),
                         p.getSku(),
@@ -74,7 +74,7 @@ public class ProductController {
                         p.getLastUpdated()
                 )
         ).collect(Collectors.toList());
-        return ResponseEntity.ok(new ProductsResponse(all));
+        return ResponseEntity.ok(new ProductsPagingResponse(all, page.getTotalPages(), page.getTotalElements()));
     }
 
     @GetMapping("/api/products/search/findByCategoryId")
