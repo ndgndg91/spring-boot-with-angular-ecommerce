@@ -74,7 +74,7 @@ public class ProductController {
                         p.getLastUpdated()
                 )
         ).collect(Collectors.toList());
-        return ResponseEntity.ok(new ProductsPagingResponse(all, page.getTotalPages(), page.getTotalElements()));
+        return ResponseEntity.ok(new ProductsPagingResponse(all, page.getTotalPages(), page.getTotalElements(), pageable.getPageSize(), pageable.getPageNumber()));
     }
 
     @GetMapping("/api/products/search/findByCategoryId")
@@ -84,7 +84,8 @@ public class ProductController {
     ) {
         log.info("call Find By Category API");
         Page<Product> byCategoryId = productRepository.findByCategoryId(id, pageable);
-        return getProductsResponseResponseEntity(byCategoryId);
+        log.info("{}", byCategoryId);
+        return getProductsResponseResponseEntity(byCategoryId, pageable);
     }
 
     @GetMapping("/api/products/search/findByNameContaining")
@@ -94,10 +95,10 @@ public class ProductController {
     )
     {
         Page<Product> byNameContaining = productRepository.findByNameContaining(name, pageable);
-        return getProductsResponseResponseEntity(byNameContaining);
+        return getProductsResponseResponseEntity(byNameContaining, pageable);
     }
 
-    private ResponseEntity<ProductsPagingResponse> getProductsResponseResponseEntity(Page<Product> byNameContaining) {
+    private ResponseEntity<ProductsPagingResponse> getProductsResponseResponseEntity(Page<Product> byNameContaining, Pageable pageable) {
         List<ProductResponse> products = byNameContaining.stream().map(p ->
                 new ProductResponse(
                         p.getId(),
@@ -112,7 +113,7 @@ public class ProductController {
                         p.getLastUpdated()
                 )
         ).collect(Collectors.toList());
-        return ResponseEntity.ok(new ProductsPagingResponse(products, byNameContaining.getTotalPages(), byNameContaining.getNumberOfElements()));
+        return ResponseEntity.ok(new ProductsPagingResponse(products, byNameContaining.getTotalPages(), byNameContaining.getTotalElements(), pageable.getPageSize(), pageable.getPageNumber()));
     }
 
     @GetMapping("/api/product-category")

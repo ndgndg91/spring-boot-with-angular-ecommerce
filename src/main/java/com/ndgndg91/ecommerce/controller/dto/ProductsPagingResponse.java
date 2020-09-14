@@ -4,24 +4,19 @@ import java.util.List;
 
 public final class ProductsPagingResponse {
     private final List<ProductResponse> products;
-    private final int totalPage;
-    private final long totalElements;
+    private final Page page;
 
-    public ProductsPagingResponse(List<ProductResponse> products, int totalPage, long totalElements) {
+
+    public ProductsPagingResponse(List<ProductResponse> products, int totalPage, long totalElements, int size, int current) {
         this.products = products;
-        this.totalPage = totalPage;
-        this.totalElements = totalElements;
+        this.page = new Page(size, totalElements, totalPage, current);
     }
 
     public List<ProductResponse> getProducts() {
         return products;
     }
 
-    public int getTotalPage() {
-        return totalPage;
-    }
-
-    public long getTotalElements() {
-        return totalElements;
+    public Page getPage() {
+        return page;
     }
 }
