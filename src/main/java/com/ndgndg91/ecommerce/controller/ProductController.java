@@ -78,7 +78,7 @@ public class ProductController {
     }
 
     @GetMapping("/api/products/search/findByCategoryId")
-    public ResponseEntity<ProductsResponse> productsByCategoryId(
+    public ResponseEntity<ProductsPagingResponse> productsByCategoryId(
             @RequestParam long id,
             Pageable pageable
     ) {
@@ -88,7 +88,7 @@ public class ProductController {
     }
 
     @GetMapping("/api/products/search/findByNameContaining")
-    public ResponseEntity<ProductsResponse> productsByNameContaining(
+    public ResponseEntity<ProductsPagingResponse> productsByNameContaining(
             @RequestParam String name,
             Pageable pageable
     )
@@ -97,7 +97,7 @@ public class ProductController {
         return getProductsResponseResponseEntity(byNameContaining);
     }
 
-    private ResponseEntity<ProductsResponse> getProductsResponseResponseEntity(Page<Product> byNameContaining) {
+    private ResponseEntity<ProductsPagingResponse> getProductsResponseResponseEntity(Page<Product> byNameContaining) {
         List<ProductResponse> products = byNameContaining.stream().map(p ->
                 new ProductResponse(
                         p.getId(),
@@ -112,7 +112,7 @@ public class ProductController {
                         p.getLastUpdated()
                 )
         ).collect(Collectors.toList());
-        return ResponseEntity.ok(new ProductsResponse(products));
+        return ResponseEntity.ok(new ProductsPagingResponse(products, byNameContaining.getTotalPages(), byNameContaining.getNumberOfElements()));
     }
 
     @GetMapping("/api/product-category")
