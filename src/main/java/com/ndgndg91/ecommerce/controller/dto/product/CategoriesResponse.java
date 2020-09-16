@@ -1,4 +1,4 @@
-package com.ndgndg91.ecommerce.controller.dto;
+package com.ndgndg91.ecommerce.controller.dto.product;
 
 import java.util.List;
 

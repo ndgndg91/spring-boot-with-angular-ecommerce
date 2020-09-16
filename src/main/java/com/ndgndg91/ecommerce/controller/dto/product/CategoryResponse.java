@@ -1,4 +1,4 @@
-package com.ndgndg91.ecommerce.controller.dto;
+package com.ndgndg91.ecommerce.controller.dto.product;
 
 public final class CategoryResponse {
     private Long id;

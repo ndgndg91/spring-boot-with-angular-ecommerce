@@ -1,6 +1,9 @@
 package com.ndgndg91.ecommerce.controller;
 
-import com.ndgndg91.ecommerce.controller.dto.*;
+import com.ndgndg91.ecommerce.controller.dto.product.CategoriesResponse;
+import com.ndgndg91.ecommerce.controller.dto.product.CategoryResponse;
+import com.ndgndg91.ecommerce.controller.dto.product.ProductResponse;
+import com.ndgndg91.ecommerce.controller.dto.product.ProductsPagingResponse;
 import com.ndgndg91.ecommerce.entity.Product;
 import com.ndgndg91.ecommerce.repository.ProductCategoryRepository;
 import com.ndgndg91.ecommerce.repository.ProductRepository;
